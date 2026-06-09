@@ -1,10 +1,38 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const SITE_URL = "https://happy-birthday-vyfang.vercel.app";
+const SITE_TITLE = "Gửi Vyfang — Mừng Sinh Nhật Pé Nhóc của Anh";
+const SITE_DESCRIPTION =
+  "Một vũ trụ nhỏ được làm riêng cho Vyfang — nơi mỗi vì sao là một kỷ niệm của chúng mình.";
+
 export const metadata: Metadata = {
-  title: "Gửi Vyfang — Mừng Sinh Nhật Pé Nhóc của Anh",
-  description: "Được thiết kế riêng cho Vyfang.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   robots: { index: false, follow: false },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: "Gửi Vyfang",
+    locale: "vi_VN",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Gửi Vyfang — Mừng Sinh Nhật Pé Nhóc của Anh",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
 
 export const viewport: Viewport = {
