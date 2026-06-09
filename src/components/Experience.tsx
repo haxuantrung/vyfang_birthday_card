@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, MotionConfig } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 
 import { useExperience } from "@/store/useExperience";
@@ -100,6 +100,7 @@ export function Experience() {
   }
 
   return (
+    <MotionConfig reducedMotion="user">
     <main className="relative w-screen overflow-hidden" style={{ height: "100dvh" }}>
       <AudioController />
 
@@ -251,17 +252,20 @@ export function Experience() {
         )}
       </AnimatePresence>
 
-      {/* Overlay memory (mở từ galaxy) */}
+      {/* Overlay memory (mở từ galaxy)
+          Lưu ý iOS Safari: KHÔNG animate transform (scale) trên phần tử
+          position:fixed toàn màn hình -> gây render trắng/blank.
+          Dùng absolute trong <main> + chỉ animate opacity cho an toàn. */}
       <AnimatePresence>
         {activeMemory && (
           <motion.div
             key={activeMemory}
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.45 }}
-            className="fixed inset-0 z-40 no-scrollbar"
-            style={{ height: "100dvh" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 z-40 no-scrollbar"
+            style={{ height: "100%" }}
           >
             {MEMORY_REGISTRY[activeMemory]}
             <button
@@ -285,5 +289,6 @@ export function Experience() {
         )}
       </AnimatePresence>
     </main>
+    </MotionConfig>
   );
 }
