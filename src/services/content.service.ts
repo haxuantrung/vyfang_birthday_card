@@ -70,10 +70,9 @@ function mapGallery(rows: GalleryRow[] | null): GalleryPhoto[] {
 }
 
 function mapAudio(rows: AudioRow[] | null, kind: "voice" | "music"): AudioAsset | null {
-  const fallback = kind === "voice" ? FALLBACK_CONTENT.voice : FALLBACK_CONTENT.music;
-  if (!rows) return fallback;
+  if (!rows) return null;
   const row = rows.find((r) => r.kind === kind && r.is_active !== false);
-  if (!row || !row.storage_path) return fallback;
+  if (!row) return null;
   return {
     id: row.id,
     kind,
@@ -91,9 +90,16 @@ function mapLetter(row: LetterRow | null): LetterContent {
   };
 }
 
+function logSupabaseError(scope: string, error: { message: string } | null) {
+  if (error) console.warn(`[content] ${scope}:`, error.message);
+}
+
 export async function fetchSiteContent(): Promise<SiteContent> {
   const supabase = getSupabase();
-  if (!supabase) return FALLBACK_CONTENT;
+  if (!supabase) {
+    console.warn("[content] Thiếu NEXT_PUBLIC_SUPABASE_URL hoặc ANON_KEY — dùng fallback.");
+    return FALLBACK_CONTENT;
+  }
 
   try {
     const [settingsRes, galleryRes, audioRes, letterRes] = await Promise.all([
@@ -108,6 +114,18 @@ export async function fetchSiteContent(): Promise<SiteContent> {
       supabase.from("letter").select("body, signature").limit(1).maybeSingle(),
     ]);
 
+    logSupabaseError("settings", settingsRes.error);
+    logSupabaseError("gallery_photos", galleryRes.error);
+    logSupabaseError("audio_assets", audioRes.error);
+    logSupabaseError("letter", letterRes.error);
+
+    const hasBlockingError =
+      settingsRes.error || galleryRes.error || audioRes.error || letterRes.error;
+    if (hasBlockingError) {
+      console.warn("[content] Supabase trả lỗi — dùng fallback tối thiểu.");
+      return FALLBACK_CONTENT;
+    }
+
     return {
       settings: mapSettings(settingsRes.data as SettingRow[] | null),
       gallery: mapGallery(galleryRes.data as GalleryRow[] | null),
@@ -115,8 +133,8 @@ export async function fetchSiteContent(): Promise<SiteContent> {
       music: mapAudio(audioRes.data as AudioRow[] | null, "music"),
       letter: mapLetter(letterRes.data as LetterRow | null),
     };
-  } catch {
-    // Lỗi mạng / RLS → vẫn trả fallback để không vỡ trải nghiệm.
+  } catch (err) {
+    console.warn("[content] Lỗi mạng khi gọi Supabase:", err);
     return FALLBACK_CONTENT;
   }
 }

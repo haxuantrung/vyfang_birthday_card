@@ -1,7 +1,15 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+/** Chuỗi rỗng từ env Vercel cũng được coi là thiếu cấu hình. */
+function readEnv(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+const url = readEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
+const anonKey = readEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+export const SUPABASE_BUCKET = readEnv(process.env.NEXT_PUBLIC_SUPABASE_BUCKET) ?? "media";
 
 /**
  * Singleton Supabase client cho phía browser.
@@ -22,23 +30,12 @@ export function getSupabase(): SupabaseClient | null {
 }
 
 /**
- * URL project Supabase — hardcode fallback để app vẫn build được public URL
- * ngay cả khi thiếu env var trên production (Storage bucket là public).
- */
-const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://sctvnaymqjtedbedmcxf.supabase.co";
-
-export const SUPABASE_BUCKET =
-  process.env.NEXT_PUBLIC_SUPABASE_BUCKET ?? "media";
-
-/**
- * Tạo public URL cho 1 file trong Storage bucket.
- * Tự dựng URL từ hằng số (không phụ thuộc Supabase client / env) để ảnh & audio
- * luôn hiển thị được — bucket `media` đang ở chế độ public.
+ * Tạo public URL cho 1 file trong Storage bucket (public read).
+ * Dựng URL trực tiếp — không cần Supabase client.
  */
 export function storagePublicUrl(path: string | null | undefined): string | null {
-  if (!path) return null;
-  if (/^https?:\/\//i.test(path)) return path; // đã là URL tuyệt đối
+  if (!path || !url) return null;
+  if (/^https?:\/\//i.test(path)) return path;
   const clean = path.replace(/^\/+/, "");
-  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_BUCKET}/${clean}`;
+  return `${url}/storage/v1/object/public/${SUPABASE_BUCKET}/${clean}`;
 }
