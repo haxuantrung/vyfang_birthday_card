@@ -21,15 +21,24 @@ export function getSupabase(): SupabaseClient | null {
   return cached;
 }
 
+/**
+ * URL project Supabase — hardcode fallback để app vẫn build được public URL
+ * ngay cả khi thiếu env var trên production (Storage bucket là public).
+ */
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://sctvnaymqjtedbedmcxf.supabase.co";
+
 export const SUPABASE_BUCKET =
   process.env.NEXT_PUBLIC_SUPABASE_BUCKET ?? "media";
 
-/** Tạo public URL cho 1 file trong Storage bucket. */
+/**
+ * Tạo public URL cho 1 file trong Storage bucket.
+ * Tự dựng URL từ hằng số (không phụ thuộc Supabase client / env) để ảnh & audio
+ * luôn hiển thị được — bucket `media` đang ở chế độ public.
+ */
 export function storagePublicUrl(path: string | null | undefined): string | null {
   if (!path) return null;
   if (/^https?:\/\//i.test(path)) return path; // đã là URL tuyệt đối
-  const client = getSupabase();
-  if (!client) return null;
-  const { data } = client.storage.from(SUPABASE_BUCKET).getPublicUrl(path);
-  return data.publicUrl ?? null;
+  const clean = path.replace(/^\/+/, "");
+  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_BUCKET}/${clean}`;
 }

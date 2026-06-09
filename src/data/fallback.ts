@@ -32,6 +32,12 @@ Chúc mừng sinh nhật tuổi 28, Vyfang.
 
 Yêu em.`;
 
+/**
+ * Toàn bộ nội dung được hardcode từ dữ liệu thật trên Supabase
+ * (bảng settings / gallery_photos / audio_assets / letter).
+ * Nhờ vậy app vẫn hiển thị đầy đủ ảnh & audio kể cả khi không truy vấn được DB
+ * hoặc thiếu env var trên production. Ảnh/audio load trực tiếp từ Storage public.
+ */
 export const FALLBACK_CONTENT: SiteContent = {
   settings: {
     // 10/06/2026 00:00 giờ Việt Nam (UTC+7)
@@ -39,9 +45,27 @@ export const FALLBACK_CONTENT: SiteContent = {
     passwordAnswer: "chidori",
     musicDefaultOn: true,
   },
-  gallery: [],
-  voice: null,
-  music: null,
+  gallery: [
+    { id: 1, storagePath: "gallery/anh-1.jpg", caption: "Lần đầu gặp nhau :v", isFeatured: false, rotation: 0, sortOrder: 1 },
+    { id: 2, storagePath: "gallery/anh-2.jpg", caption: "Chidori :))", isFeatured: false, rotation: 0, sortOrder: 2 },
+    { id: 3, storagePath: "gallery/selfie.jpg", caption: "Em — 28 tuổi <3", isFeatured: true, rotation: 0, sortOrder: 3 },
+    { id: 4, storagePath: "gallery/anh-4.jpg", caption: "Hồ Trị An <3", isFeatured: false, rotation: 0, sortOrder: 4 },
+    { id: 5, storagePath: "gallery/anh-5.jpg", caption: "Đi shopping nè", isFeatured: false, rotation: 0, sortOrder: 5 },
+  ],
+  voice: {
+    id: 1,
+    kind: "voice",
+    storagePath: "audio/voice.m4a",
+    title: "Giọng đọc từ anh",
+    durationSeconds: null,
+  },
+  music: {
+    id: 2,
+    kind: "music",
+    storagePath: "audio/background.mp3",
+    title: "Nhạc nền",
+    durationSeconds: null,
+  },
   letter: {
     body: LETTER_BODY,
     signature: "Aiu",

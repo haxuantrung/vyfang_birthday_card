@@ -70,9 +70,10 @@ function mapGallery(rows: GalleryRow[] | null): GalleryPhoto[] {
 }
 
 function mapAudio(rows: AudioRow[] | null, kind: "voice" | "music"): AudioAsset | null {
-  if (!rows) return null;
+  const fallback = kind === "voice" ? FALLBACK_CONTENT.voice : FALLBACK_CONTENT.music;
+  if (!rows) return fallback;
   const row = rows.find((r) => r.kind === kind && r.is_active !== false);
-  if (!row) return null;
+  if (!row || !row.storage_path) return fallback;
   return {
     id: row.id,
     kind,
