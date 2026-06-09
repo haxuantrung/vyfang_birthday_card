@@ -1,26 +1,28 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { X } from "lucide-react";
 import { GalaxyBg } from "../GalaxyBg";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { storagePublicUrl } from "@/lib/supabase/client";
 import type { GalleryPhoto } from "@/types";
 
-/** Vị trí cố định của 5 polaroid trong collage. */
+/** Vị trí % trong vùng collage — 4 góc + 1 ảnh giữa. */
 const LAYOUT = [
-  { rotation: -8, x: -30, y: -20, color: "#C8A8FF", zIndex: 1, featured: false },
-  { rotation: 5, x: 35, y: -30, color: "#F6C6FF", zIndex: 2, featured: false },
-  { rotation: 0, x: 0, y: 0, color: "#E9DDFF", zIndex: 10, featured: true },
-  { rotation: -4, x: -40, y: 40, color: "#C5E1FF", zIndex: 3, featured: false },
-  { rotation: 7, x: 38, y: 45, color: "#C8A8FF", zIndex: 4, featured: false },
+  { rotation: -10, xPct: 22, yPct: 26, color: "#C8A8FF", zIndex: 1, featured: false },
+  { rotation: 8, xPct: 78, yPct: 24, color: "#F6C6FF", zIndex: 2, featured: false },
+  { rotation: 0, xPct: 50, yPct: 50, color: "#E9DDFF", zIndex: 10, featured: true },
+  { rotation: -6, xPct: 20, yPct: 74, color: "#C5E1FF", zIndex: 3, featured: false },
+  { rotation: 9, xPct: 80, yPct: 76, color: "#C8A8FF", zIndex: 4, featured: false },
 ];
 
 const PLACEHOLDER_LABELS = [
-  "Lần đầu gặp nhau",
-  "Buổi sáng thứ 7",
+  "Lần đầu gặp nhau :v",
+  "Đi shopping nè",
   "Em — 28 tuổi",
-  "Hồ Trị An",
-  "Chidori",
+  "Hồ Trị An <3",
+  "Chidori :))",
 ];
 
 interface Props {
@@ -43,10 +45,14 @@ export function Screen10Polaroids({ photos = [] }: Props) {
     url: storagePublicUrl(photos[i]?.storagePath),
   }));
 
+  // Chỉ số polaroid đang được phóng to (null = đóng lightbox).
+  const [zoomedIndex, setZoomedIndex] = useState<number | null>(null);
+  const zoomed = zoomedIndex !== null ? slots[zoomedIndex] : null;
+
   return (
     <GalaxyBg variant="pink" className="w-full h-full">
-      {/* Header */}
-      <div className="absolute top-0 left-5 right-5 pt-5 z-20">
+      {/* Header — chừa góc phải cho nút "Vũ trụ" */}
+      <div className="absolute top-0 left-5 right-5 pt-5 pr-24 z-20">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -76,32 +82,45 @@ export function Screen10Polaroids({ photos = [] }: Props) {
         </motion.h2>
       </div>
 
-      {/* Polaroid collage */}
+      {/* Polaroid collage — full width, ảnh rải 4 góc + giữa */}
       <div
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ top: "80px", bottom: "60px" }}
+        className="absolute inset-x-0"
+        style={{ top: "88px", bottom: "56px" }}
       >
-        <div className="relative" style={{ width: "260px", height: "320px" }}>
+        <div className="relative w-full h-full max-w-[390px] mx-auto">
           {slots.map((photo, i) => (
-            <motion.div
+            <div
               key={photo.id}
-              initial={{ opacity: 0, scale: 0.8, rotate: photo.rotation * 2 }}
-              animate={{ opacity: 1, scale: 1, rotate: photo.rotation }}
-              transition={{ delay: 0.3 + i * 0.15, duration: 0.7, type: "spring", stiffness: 120 }}
-              whileHover={{ scale: photo.featured ? 1.05 : 0.95, zIndex: 20, transition: { duration: 0.2 } }}
               className="absolute"
               style={{
-                left: `calc(50% + ${photo.x}px)`,
-                top: `calc(50% + ${photo.y}px)`,
-                transform: `translate(-50%, -50%) rotate(${photo.rotation}deg)`,
+                left: `${photo.xPct}%`,
+                top: `${photo.yPct}%`,
                 zIndex: photo.zIndex,
-                cursor: "pointer",
+                transform: "translate(-50%, -50%)",
               }}
             >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.75, rotate: photo.rotation * 2 }}
+                animate={{ opacity: 1, scale: 1, rotate: photo.rotation }}
+                transition={{ delay: 0.3 + i * 0.15, duration: 0.7, type: "spring", stiffness: 120 }}
+                whileHover={{ scale: photo.featured ? 1.08 : 1.03, zIndex: 20, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => setZoomedIndex(i)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Phóng to ảnh: ${photo.label}`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setZoomedIndex(i);
+                  }
+                }}
+                style={{ cursor: "pointer" }}
+              >
               {/* Polaroid frame */}
               <div
                 style={{
-                  width: photo.featured ? "140px" : "110px",
+                  width: photo.featured ? "172px" : "132px",
                   background: "rgba(255, 255, 255, 0.92)",
                   borderRadius: "4px",
                   padding: "8px 8px 24px 8px",
@@ -206,7 +225,8 @@ export function Screen10Polaroids({ photos = [] }: Props) {
                   transition={{ duration: 3, repeat: Infinity }}
                 />
               )}
-            </motion.div>
+              </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -226,6 +246,102 @@ export function Screen10Polaroids({ photos = [] }: Props) {
       >
         mỗi tấm ảnh là một kỷ niệm
       </motion.p>
+
+      {/* Lightbox — phóng to ảnh ra giữa màn hình */}
+      <AnimatePresence>
+        {zoomed && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setZoomedIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Ảnh phóng to: ${zoomed.label}`}
+            className="absolute inset-0 z-50 flex items-center justify-center px-6"
+            style={{ background: "rgba(8,5,24,0.82)", backdropFilter: "blur(8px)" }}
+          >
+            {/* Nút đóng */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoomedIndex(null);
+              }}
+              aria-label="Đóng ảnh"
+              className="absolute right-4 top-4 z-10 flex items-center justify-center rounded-full"
+              style={{
+                width: "40px",
+                height: "40px",
+                background: "rgba(200,168,255,0.12)",
+                border: "1px solid rgba(200,168,255,0.25)",
+                color: "#E9DDFF",
+                cursor: "pointer",
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            {/* Khung polaroid lớn */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 12 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 220, damping: 22 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "min(86vw, 340px)",
+                background: "rgba(255,255,255,0.95)",
+                borderRadius: "8px",
+                padding: "14px 14px 44px 14px",
+                boxShadow: `0 30px 90px rgba(0,0,0,0.6), 0 0 60px ${zoomed.color}30`,
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  aspectRatio: "1",
+                  borderRadius: "3px",
+                  overflow: "hidden",
+                  position: "relative",
+                  background: GRADIENTS[(zoomedIndex ?? 0) % GRADIENTS.length],
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {zoomed.url ? (
+                  <ImageWithFallback
+                    src={zoomed.url}
+                    alt={zoomed.label}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <span style={{ fontSize: "48px", opacity: 0.55 }}>✦</span>
+                )}
+              </div>
+              <p
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                  fontSize: "20px",
+                  color: "#26184A",
+                  textAlign: "center",
+                  marginTop: "12px",
+                  lineHeight: 1.2,
+                }}
+              >
+                {zoomed.label}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </GalaxyBg>
   );
 }

@@ -34,7 +34,7 @@ const SCREENS = [
   { id: 7, title: "Hồ Trị An", subtitle: "Adventure", component: <Screen08HoTriAn />, emoji: "⛺" },
   { id: 8, title: "20 Điều Anh Thích", subtitle: "Danh sách", component: <Screen09ThingsILike />, emoji: "✧" },
   { id: 9, title: "Một Góc Nhỏ Về Em", subtitle: "Gallery", component: <Screen10Polaroids />, emoji: "📸" },
-  { id: 10, title: "Gemini Mode", subtitle: "♊ Profile", component: <Screen11Gemini />, emoji: "♊" },
+  { id: 10, title: "Cô Pé Song Tử", subtitle: "♊ Profile", component: <Screen11Gemini />, emoji: "♊" },
   { id: 11, title: "Những Vì Sao", subtitle: "Tương lai", component: <Screen12FutureStars />, emoji: "🔮" },
   { id: 12, title: "Secret Stars", subtitle: "Bí mật ẩn", component: <Screen13SecretStars />, emoji: "⁕" },
   { id: 13, title: "Final Letter", subtitle: "Lá thư cuối", component: <Screen14Letter />, emoji: "💌" },

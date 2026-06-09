@@ -6,7 +6,7 @@ import { useExperience } from "@/store/useExperience";
 import { storagePublicUrl } from "@/lib/supabase/client";
 
 /**
- * Nhạc nền loop toàn site (mặc định ~20% volume).
+ * Nhạc nền loop toàn site (mặc định ~50% volume).
  * Autoplay bị trình duyệt chặn nên chỉ phát sau tương tác đầu tiên của user.
  */
 export function AudioController() {
@@ -22,7 +22,7 @@ export function AudioController() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !musicUrl) return;
-    audio.volume = 0.2;
+    audio.volume = 0.5;
     if (musicEnabled) {
       void audio.play().catch(() => {
         /* bị chặn autoplay — bỏ qua, chờ user bấm nút */
@@ -45,7 +45,7 @@ export function AudioController() {
         className="fixed z-50 flex items-center justify-center rounded-full"
         style={{
           right: "16px",
-          top: "16px",
+          top: "64px",
           width: "40px",
           height: "40px",
           background: "rgba(200,168,255,0.12)",

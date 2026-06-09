@@ -3,9 +3,9 @@ import { GalaxyBg } from "../GalaxyBg";
 
 const OBSERVATIONS = [
   { emoji: "♊", title: "Hai tính cách, một người", text: "Hôm nay hướng ngoại. Ngày mai muốn ở nhà yên tĩnh. Cả hai đều là em.", color: "#C8A8FF" },
-  { emoji: "⚡", title: "Quyết định nhanh như chớp", text: "Khi đã chọn thì không back. Kể cả màu tím cho mọi thứ.", color: "#F6C6FF" },
-  { emoji: "🎨", title: "Không thể ngồi yên với design xấu", text: "Em nhìn cái gì cũng thấy cần redesign. Kể cả menu nhà hàng.", color: "#C5E1FF" },
-  { emoji: "✨", title: "Charm đến không cần cố", text: "Em không biết mình dễ thương như thế nào. Đó mới là điều dễ thương nhất.", color: "#E9DDFF" },
+  { emoji: "⚡", title: "Sáng nắng, chiều mưa, tối giông bão, tất cả đều là em", text: "Một Song Tử điển hình, thay đổi cảm xúc, nhưng anh không bỏ rơi em một mình.", color: "#F6C6FF" },
+  { emoji: "🎨", title: "Nhanh thích và cũng nhanh chán", text: "Điều may mắn là pé Song Tử này vẫn chưa chán Anh. (trộm vía!!)", color: "#C5E1FF" },
+  { emoji: "✨", title: "Pé luôn dễ thương mọi lúc", text: "Em không biết mình dễ thương như thế nào. Đó mới là điều dễ thương nhất.", color: "#E9DDFF" },
 ];
 
 export function Screen11Gemini() {
@@ -51,7 +51,7 @@ export function Screen11Gemini() {
               textTransform: "uppercase",
             }}
           >
-            Gemini Mode · ♊
+            Cô Pé Song Tử · ♊
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 8 }}
@@ -65,7 +65,7 @@ export function Screen11Gemini() {
               lineHeight: "1.2",
             }}
           >
-            Vyfang — theo góc nhìn của anh
+            Vyfang trong mắt Anh
           </motion.h2>
         </div>
 

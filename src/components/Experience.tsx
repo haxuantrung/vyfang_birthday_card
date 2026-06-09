@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft } from "lucide-react";
 
@@ -73,6 +73,12 @@ export function Experience() {
       mounted = false;
     };
   }, [setContent, setPhase]);
+
+  // Nút "Lời chúc cuối" chỉ hiện sau khi user đã mở lá thư.
+  const [letterOpened, setLetterOpened] = useState(false);
+  useEffect(() => {
+    if (phase !== "letter") setLetterOpened(false);
+  }, [phase]);
 
   const voiceUrl = storagePublicUrl(content.voice?.storagePath);
 
@@ -184,28 +190,35 @@ export function Experience() {
               body={content.letter.body}
               signature={content.letter.signature}
               voiceUrl={voiceUrl}
+              onOpened={() => setLetterOpened(true)}
             />
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => setPhase("ending")}
-              className="absolute right-5 z-30 px-5 py-2.5 rounded-full"
-              style={{
-                bottom: "5%",
-                background: "rgba(200,168,255,0.12)",
-                border: "1px solid rgba(200,168,255,0.3)",
-                color: "#E9DDFF",
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "12px",
-                cursor: "pointer",
-                backdropFilter: "blur(10px)",
-              }}
-            >
-              Lời chúc cuối →
-            </motion.button>
+            <AnimatePresence>
+              {letterOpened && (
+                <motion.button
+                  key="final-wish"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setPhase("ending")}
+                  className="absolute right-5 z-30 px-5 py-2.5 rounded-full"
+                  style={{
+                    bottom: "5%",
+                    background: "rgba(200,168,255,0.12)",
+                    border: "1px solid rgba(200,168,255,0.3)",
+                    color: "#E9DDFF",
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  Lời chúc cuối →
+                </motion.button>
+              )}
+            </AnimatePresence>
           </Stage>
         )}
 
@@ -254,7 +267,7 @@ export function Experience() {
             <button
               onClick={closeMemory}
               aria-label="Quay lại bản đồ vũ trụ"
-              className="absolute left-4 top-4 z-50 flex items-center gap-1 rounded-full pl-2 pr-4 py-2"
+              className="absolute right-4 top-4 z-50 flex items-center gap-1 rounded-full pl-2 pr-4 py-2"
               style={{
                 background: "rgba(18,11,45,0.5)",
                 border: "1px solid rgba(200,168,255,0.25)",

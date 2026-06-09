@@ -18,9 +18,9 @@ const MAIN_STARS: MapStar[] = [
   { id: "chidori", x: 40, y: 15, title: "Chidori", icon: "☕" },
   { id: "hug", x: 71, y: 19, title: "Cái Ôm\nĐầu Tiên", icon: "♡" },
   { id: "lake", x: 83, y: 44, title: "Hồ Trị An", icon: "◈" },
-  { id: "things", x: 51, y: 40, title: "20 Điều\nAnh Thích", icon: "✧" },
+  { id: "things", x: 51, y: 40, title: "Những Điều\nAnh Thích Ở Em", icon: "✧" },
   { id: "gallery", x: 21, y: 60, title: "Một Góc\nNhỏ Về Em", icon: "◉" },
-  { id: "gemini", x: 64, y: 64, title: "Gemini\nMode", icon: "♊" },
+  { id: "gemini", x: 64, y: 64, title: "Cô Pé\nSong Tử", icon: "♊" },
   { id: "future", x: 44, y: 82, title: "Những Vì Sao\nChưa Kịp Sáng", icon: "⬡" },
 ];
 
@@ -175,32 +175,45 @@ export function Screen04GalaxyMap({ opened, onOpen, onOpenSecret, onFinish }: Pr
           );
         })}
 
-        {/* Secret stars */}
-        {SECRET_STARS.map((star, i) => (
-          <motion.button
-            key={star.id}
-            onClick={() => handleSecret(star)}
-            aria-label="Vì sao bí mật"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: secretFound.has(star.id) ? 1 : 0.25 }}
-            transition={{ delay: 1 + i * 0.1 }}
-            className="absolute cursor-pointer"
-            style={{
-              left: `${star.x}%`, top: `${star.y}%`, transform: "translate(-50%, -50%)",
-              width: "12px", height: "12px", borderRadius: "50%",
-              background: secretFound.has(star.id) ? "radial-gradient(circle, #F6C6FF, #C8A8FF)" : "rgba(200, 168, 255, 0.4)",
-              boxShadow: secretFound.has(star.id) ? "0 0 16px rgba(246, 198, 255, 0.6)" : "none",
-              border: "none", zIndex: 5,
-            }}
-          >
-            <motion.div
-              animate={{ scale: [1, 1.6, 1], opacity: [0.3, 0.8, 0.3] }}
-              transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
-              className="absolute inset-0 rounded-full"
-              style={{ background: "rgba(246, 198, 255, 0.2)" }}
-            />
-          </motion.button>
-        ))}
+        {/* Secret stars — vùng chạm lớn (padding) để dễ bấm trên mobile */}
+        {SECRET_STARS.map((star, i) => {
+          const found = secretFound.has(star.id);
+          return (
+            <motion.button
+              key={star.id}
+              onClick={() => handleSecret(star)}
+              aria-label="Vì sao bí mật"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 + i * 0.1 }}
+              className="absolute flex items-center justify-center cursor-pointer"
+              style={{
+                left: `${star.x}%`, top: `${star.y}%`, transform: "translate(-50%, -50%)",
+                width: "40px", height: "40px",
+                background: "none", border: "none", padding: 0, zIndex: 6,
+              }}
+            >
+              {/* Chấm sao nhìn thấy */}
+              <span
+                style={{
+                  position: "relative",
+                  width: "12px", height: "12px", borderRadius: "50%",
+                  opacity: found ? 1 : 0.3,
+                  background: found ? "radial-gradient(circle, #F6C6FF, #C8A8FF)" : "rgba(200, 168, 255, 0.55)",
+                  boxShadow: found ? "0 0 16px rgba(246, 198, 255, 0.6)" : "0 0 6px rgba(200,168,255,0.35)",
+                  transition: "all 0.4s",
+                }}
+              >
+                <motion.span
+                  animate={{ scale: [1, 1.6, 1], opacity: [0.3, 0.8, 0.3] }}
+                  transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: "rgba(246, 198, 255, 0.25)" }}
+                />
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
 
       {/* Bottom: hint hoặc nút mở thư cuối */}

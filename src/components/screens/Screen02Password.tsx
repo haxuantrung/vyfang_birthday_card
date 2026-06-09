@@ -91,7 +91,7 @@ export function Screen02Password({ answer = "chidori", onUnlock }: Props) {
             lineHeight: "1.7",
             marginBottom: "28px",
           }}>
-            Em còn nhớ nơi mọi thứ bắt đầu không?
+            Em còn nhớ nơi mọi thứ bắt đầu?
           </h2>
 
           {/* Input */}
@@ -160,7 +160,7 @@ export function Screen02Password({ answer = "chidori", onUnlock }: Props) {
               boxShadow: success ? "0 0 30px rgba(183, 148, 244, 0.4)" : "none",
             }}
           >
-            {success ? "✦  Chào mừng em quay lại  ✦" : "Mở cửa"}
+            {success ? "✦  Xin chào Eiu  ✦" : "Mở cửa"}
           </motion.button>
         </motion.div>
 
@@ -178,7 +178,7 @@ export function Screen02Password({ answer = "chidori", onUnlock }: Props) {
             textAlign: "center",
           }}
         >
-          Gợi ý: nơi đầu tiên chúng ta uống cà phê
+          Gợi ý: chỗ hẹn "cà phê" đầu tiên
         </motion.p>
       </div>
     </GalaxyBg>

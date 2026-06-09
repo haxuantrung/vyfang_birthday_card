@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { GalaxyBg } from "../GalaxyBg";
 
 const FUTURE_ITEMS = [
-  { id: 1, icon: "🌺", title: "Đà Lạt", text: "Cà phê sáng sương mù. Em mặc áo ấm. Anh nhìn em cười.", locked: false, color: "#C8A8FF" },
+  { id: 1, icon: "🌺", title: "Đà Lạt", text: "Muốn đi với em. Ôm nhau giữa cái thời tiết lạnh.", locked: false, color: "#C8A8FF" },
   { id: 2, icon: "🎂", title: "Sinh nhật 29 tuổi", text: "Anh sẽ lại làm một thứ gì đó cho em. Hứa.", locked: false, color: "#F6C6FF" },
   { id: 3, icon: "✈", title: "Chuyến đi xa", text: "Nơi nào đó chúng ta chưa biết. Cùng nhau khám phá.", locked: true, color: "#C5E1FF" },
   { id: 4, icon: "🌙", title: "Những đêm bình yên", text: "Không cần đi đâu. Chỉ cần có nhau.", locked: true, color: "#E9DDFF" },
@@ -84,7 +84,7 @@ export function Screen12FutureStars() {
               marginTop: "4px",
             }}
           >
-            Những kỷ niệm chúng ta chưa tạo ra
+            Những chuyến đi anh muốn cùng em đi
           </motion.p>
         </div>
 

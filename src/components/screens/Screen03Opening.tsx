@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { GalaxyBg } from "../GalaxyBg";
+import { HeartIcon } from "lucide-react";
 
 export function Screen03Opening() {
   return (
@@ -151,7 +152,16 @@ export function Screen03Opening() {
             maxWidth: "280px",
           }}
         >
-          Đây là mùa sinh nhật đầu tiên anh được ở bên cạnh em.
+          Sinh nhật đầu tiên Anh được ở bên cạnh Eiu.<br />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 1s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 1.5s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 2.5s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 3s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 3.5s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 4s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 4.5s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 5s infinite" }} />
+          <HeartIcon className="w-4 h-4 inline-block mx-1" style={{ animation: "pulse 5.5s infinite" }} />
         </motion.p>
 
         {/* Star decoration */}

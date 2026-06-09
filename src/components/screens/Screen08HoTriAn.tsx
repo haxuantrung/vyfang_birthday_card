@@ -1,7 +1,16 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { GalaxyBg } from "../GalaxyBg";
+import { storagePublicUrl } from "@/lib/supabase/client";
+
+/** Ảnh thật cho cảnh Hồ Trị An (upload lên Storage theo đường dẫn này). */
+const LAKE_PHOTO_PATH = "lake/ho-tri-an.jpg";
 
 export function Screen08HoTriAn() {
+  const photoUrl = storagePublicUrl(LAKE_PHOTO_PATH);
+  const [photoError, setPhotoError] = useState(false);
+  const showPhoto = Boolean(photoUrl) && !photoError;
+
   return (
     <GalaxyBg variant="blue" className="w-full h-full">
       {/* Deep blue lake night atmosphere */}
@@ -43,12 +52,12 @@ export function Screen08HoTriAn() {
         </div>
 
         {/* 3D scene card */}
-        <div className="px-5 mt-4 flex-1 flex flex-col gap-3">
+        <div className="px-5 py-4 flex-1 flex flex-col justify-center gap-3 min-h-0">
           <motion.div
             initial={{ opacity: 0, y: 30, rotateX: 8 }}
             animate={{ opacity: 1, y: 0, rotateX: 0 }}
             transition={{ delay: 0.5, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="rounded-3xl overflow-hidden"
+            className="rounded-3xl overflow-hidden flex flex-col flex-1 min-h-0"
             style={{
               background: "rgba(255,255,255,0.03)",
               border: "1px solid rgba(197, 225, 255, 0.12)",
@@ -56,8 +65,8 @@ export function Screen08HoTriAn() {
               boxShadow: "0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
             }}
           >
-            {/* Night sky scene */}
-            <div className="relative h-48 overflow-hidden"
+            {/* Night sky scene — co giãn lấp đầy chiều cao card */}
+            <div className="relative flex-1 min-h-0 overflow-hidden"
               style={{ background: "linear-gradient(180deg, #0D0720 0%, #1a1040 40%, #0a1830 70%, #051020 100%)" }}>
 
               {/* Stars in scene */}
@@ -153,10 +162,24 @@ export function Screen08HoTriAn() {
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
               </div>
+
+              {/* Ảnh thật từ Supabase — phủ lên cảnh minh hoạ khi đã upload */}
+              {showPhoto && (
+                <motion.img
+                  src={photoUrl as string}
+                  alt="Hồ Trị An"
+                  onError={() => setPhotoError(true)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className="absolute inset-0 w-full h-full"
+                  style={{ objectFit: "cover", zIndex: 5 }}
+                />
+              )}
             </div>
 
             {/* Card text */}
-            <div className="p-5">
+            <div className="p-5 flex-shrink-0">
               <p style={{
                 fontFamily: "'Playfair Display', serif",
                 fontSize: "16px",
@@ -165,7 +188,7 @@ export function Screen08HoTriAn() {
                 lineHeight: "1.7",
                 marginBottom: "12px",
               }}>
-                Ngồi bên hồ, nhìn bầu trời đầy sao. Lửa trại. Gió nhẹ. Em ngủ gật trên vai anh.
+                Túp lều bên hồ. Thịt nướng. Mưa nhẹ. Ôm em ngủ.
               </p>
               <div className="flex gap-2 flex-wrap">
                 {["⛺ Cắm trại", "🌊 Hồ đêm", "🔥 Lửa trại", "🌟 Sao trời"].map((tag) => (

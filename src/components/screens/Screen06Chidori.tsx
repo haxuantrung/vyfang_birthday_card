@@ -150,7 +150,7 @@ export function Screen06Chidori() {
               lineHeight: "1.7",
               marginBottom: "16px",
             }}>
-              Góc bàn nhỏ ở cuối quán. Tiếng mưa. Ánh đèn vàng. Và em.
+              2 đứa trong không gian riêng. Mưa ngoài trời. Em.
             </p>
             <div className="flex gap-2 flex-wrap">
               {MEMORIES.slice(3).map((m, i) => (

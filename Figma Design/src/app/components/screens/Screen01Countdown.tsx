@@ -114,7 +114,7 @@ export function Screen01Countdown() {
             marginBottom: "6px",
           }}
         >
-          Gửi Vyfang,
+          Gửi pé Vyfang của Anh,
         </motion.p>
 
         {/* Main message */}
@@ -134,7 +134,7 @@ export function Screen01Countdown() {
             marginBottom: "8px",
           }}
         >
-          Món quà này sẽ mở khi sinh nhật của em bắt đầu.
+          Món quà này sẽ mở khi tới ngày sinh nhật của em.
         </motion.h1>
 
         {/* Divider */}

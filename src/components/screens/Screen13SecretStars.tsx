@@ -95,78 +95,89 @@ export function Screen13SecretStars() {
             ))}
 
             {/* Secret stars */}
-            {SECRETS.map((s, i) => (
-              <motion.button
-                key={s.id}
-                onClick={() => handleStar(s)}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: revealed.has(s.id) ? 1 : 0.2 + (i * 0.1) % 0.2 }}
-                transition={{ delay: 0.5 + i * 0.2 }}
-                className="absolute"
-                style={{
-                  left: `${s.x}%`,
-                  top: `${s.y}%`,
-                  transform: "translate(-50%, -50%)",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "8px",
-                  zIndex: 5,
-                }}
-              >
-                <motion.div
-                  animate={{
-                    scale: revealed.has(s.id)
-                      ? [1, 1.4, 1]
-                      : [0.8, 1.1, 0.8],
-                    opacity: revealed.has(s.id) ? [0.8, 1, 0.8] : [0.15, 0.4, 0.15],
+            {SECRETS.map((s, i) => {
+              const isRevealed = revealed.has(s.id);
+              return (
+                <motion.button
+                  key={s.id}
+                  onClick={() => handleStar(s)}
+                  aria-label={isRevealed ? s.label : "Ngôi sao bí mật — chạm để mở"}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + i * 0.2, type: "spring" }}
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="absolute flex items-center justify-center"
+                  style={{
+                    left: `${s.x}%`,
+                    top: `${s.y}%`,
+                    transform: "translate(-50%, -50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    width: "48px",
+                    height: "48px",
+                    padding: 0,
+                    zIndex: 5,
                   }}
-                  transition={{ duration: revealed.has(s.id) ? 2 : 3 + i * 0.5, repeat: Infinity, delay: i * 0.7 }}
-                  className="relative"
                 >
-                  <div style={{
-                    width: revealed.has(s.id) ? "14px" : "8px",
-                    height: revealed.has(s.id) ? "14px" : "8px",
-                    borderRadius: "50%",
-                    background: revealed.has(s.id)
-                      ? "radial-gradient(circle, #F6C6FF, #C8A8FF)"
-                      : "rgba(200, 168, 255, 0.5)",
-                    boxShadow: revealed.has(s.id)
-                      ? "0 0 20px rgba(246, 198, 255, 0.7), 0 0 40px rgba(200, 168, 255, 0.3)"
-                      : "none",
-                    transition: "all 0.4s",
-                  }} />
-
-                  {revealed.has(s.id) && (
-                    <motion.div
-                      className="absolute -inset-4 rounded-full pointer-events-none"
-                      style={{ background: "radial-gradient(circle, rgba(246,198,255,0.15), transparent)" }}
-                      animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  )}
-                </motion.div>
-
-                {revealed.has(s.id) && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.6 }}
-                    className="absolute"
+                  {/* Vòng sáng nhấp nháy — gợi ý có thể bấm */}
+                  <motion.span
+                    className="absolute rounded-full pointer-events-none"
                     style={{
-                      top: "24px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      whiteSpace: "nowrap",
-                      fontFamily: "'Caveat', cursive",
-                      fontSize: "10px",
-                      color: "#F6C6FF",
+                      width: "30px",
+                      height: "30px",
+                      border: `1px solid ${isRevealed ? "rgba(246,198,255,0.5)" : "rgba(200,168,255,0.4)"}`,
                     }}
-                  >
-                    {s.label}
-                  </motion.p>
-                )}
-              </motion.button>
-            ))}
+                    animate={{ scale: [1, 1.8, 1], opacity: [0.6, 0, 0.6] }}
+                    transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.5 }}
+                  />
+                  <motion.span
+                    className="absolute rounded-full pointer-events-none"
+                    style={{ background: "radial-gradient(circle, rgba(200,168,255,0.25), transparent 70%)", inset: "4px" }}
+                    animate={{ opacity: [0.4, 0.9, 0.4], scale: [0.9, 1.15, 0.9] }}
+                    transition={{ duration: 2.8 + i * 0.4, repeat: Infinity, delay: i * 0.3 }}
+                  />
+
+                  {/* Chấm sao chính */}
+                  <motion.span
+                    className="relative rounded-full"
+                    style={{
+                      width: isRevealed ? "18px" : "14px",
+                      height: isRevealed ? "18px" : "14px",
+                      background: isRevealed
+                        ? "radial-gradient(circle, #F6C6FF, #C8A8FF)"
+                        : "radial-gradient(circle, #E9DDFF, #C8A8FF)",
+                      boxShadow: isRevealed
+                        ? "0 0 20px rgba(246, 198, 255, 0.9), 0 0 40px rgba(200, 168, 255, 0.4)"
+                        : "0 0 12px rgba(200, 168, 255, 0.7), 0 0 24px rgba(200, 168, 255, 0.3)",
+                      transition: "all 0.4s",
+                    }}
+                    animate={isRevealed ? {} : { scale: [1, 1.15, 1] }}
+                    transition={{ duration: 2 + i * 0.3, repeat: Infinity }}
+                  />
+
+                  {isRevealed && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.7 }}
+                      className="absolute"
+                      style={{
+                        top: "34px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        whiteSpace: "nowrap",
+                        fontFamily: "'Caveat', cursive",
+                        fontSize: "11px",
+                        color: "#F6C6FF",
+                      }}
+                    >
+                      {s.label}
+                    </motion.span>
+                  )}
+                </motion.button>
+              );
+            })}
           </div>
         </div>
 

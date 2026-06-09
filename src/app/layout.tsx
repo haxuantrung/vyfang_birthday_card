@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Gửi Vyfang — Mừng Sinh Nhật Pé Nhóc của AnhAnh",
-  description: "Một trải nghiệm sinh nhật được thiết kế riêng cho Vyfang.",
+  title: "Gửi Vyfang — Mừng Sinh Nhật Pé Nhóc của Anh",
+  description: "Được thiết kế riêng cho Vyfang.",
   robots: { index: false, follow: false },
 };
 

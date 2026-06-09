@@ -17,6 +17,8 @@ interface Props {
   signature?: string;
   /** URL voice thật (Supabase Storage). Null = chưa có. */
   voiceUrl?: string | null;
+  /** Gọi khi người dùng mở lá thư (để hiện nút "Lời chúc cuối"). */
+  onOpened?: () => void;
 }
 
 function formatTime(sec: number) {
@@ -30,6 +32,7 @@ export function Screen14Letter({
   body = DEFAULT_LETTER,
   signature = "Aiu",
   voiceUrl = null,
+  onOpened,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -92,7 +95,10 @@ export function Screen14Letter({
               className="flex flex-col items-center"
             >
               <motion.button
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                  setIsOpen(true);
+                  onOpened?.();
+                }}
                 className="relative flex flex-col items-center gap-6"
                 style={{ background: "none", border: "none", cursor: "pointer" }}
               >

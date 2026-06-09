@@ -34,6 +34,48 @@ insert into public.gallery_photos (storage_path, caption, is_featured, sort_orde
 
 ---
 
+## A2. Upload ẢNH cho màn "Những điều anh thích ở Em" (card swipe)
+
+Màn này hiển thị 1 ảnh cho mỗi card (hiện có **10 card**). **Không cần khai báo bảng** — website tự tìm ảnh theo tên file cố định.
+
+### Quy tắc đặt tên (bắt buộc)
+1. Trong bucket **`media`**, tạo thư mục `things`.
+2. Upload ảnh với tên **đúng số thứ tự card**, dạng 2 chữ số:
+
+```
+things/01.jpg   ← card #01 "Nụ cười của em..."
+things/02.jpg   ← card #02 "Cách em chọn màu tím..."
+things/03.jpg
+...
+things/10.jpg   ← card #10
+```
+
+- Định dạng `.jpg` (đúng đuôi này), nên là ảnh vuông hoặc ngang, đã nén ≤ ~1MB.
+- Không cần upload đủ 10 ảnh ngay: card nào **chưa có ảnh** sẽ hiển thị nền galaxy + dấu ✦ cho tới khi bạn upload.
+- Số trên card (`#01 / 10` … `#10 / 10`) chính là số file cần đặt.
+
+> Muốn đổi đuôi sang `.webp` hoặc đổi thứ tự text/màu thì cần sửa code màn `Screen09ThingsILike.tsx` — báo mình hỗ trợ.
+
+---
+
+## A3. Upload ẢNH cho màn "Hồ Trị An" (Chapter 04)
+
+Màn này có khung cảnh đêm vẽ sẵn. Khi bạn upload 1 ảnh thật, ảnh sẽ **tự phủ lên** khung cảnh đó. **Không cần khai báo bảng.**
+
+1. Trong bucket **`media`**, tạo thư mục `lake`.
+2. Upload đúng 1 file tên **`ho-tri-an.jpg`**:
+
+```
+lake/ho-tri-an.jpg
+```
+
+- Ảnh ngang đẹp nhất (khung hiển thị tỉ lệ ~16:9), `.jpg`, nén ≤ ~1MB.
+- Chưa upload thì màn vẫn hiển thị cảnh đêm minh hoạ (lều, trăng, lửa trại) như bình thường.
+
+> Muốn đổi sang nhiều ảnh hoặc đổi tên file thì báo mình chỉnh `Screen08HoTriAn.tsx`.
+
+---
+
 ## B. Upload VOICE (giọng đọc trong lá thư)
 
 ### Bước 1 — Upload file voice

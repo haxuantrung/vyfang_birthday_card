@@ -66,7 +66,7 @@ export function Screen15Ending() {
             marginBottom: "8px",
             textShadow: "0 0 30px rgba(200, 168, 255, 0.3)",
           }}>
-            Chúc mừng sinh nhật tuổi 28.
+            Chúc mừng sinh nhật Eiu.
           </h1>
         </motion.div>
 

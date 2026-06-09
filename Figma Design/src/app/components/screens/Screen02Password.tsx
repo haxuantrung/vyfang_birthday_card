@@ -176,7 +176,7 @@ export function Screen02Password({ onUnlock }: Props) {
             textAlign: "center",
           }}
         >
-          Gợi ý: nơi đầu tiên chúng ta uống cà phê
+          Gợi ý: chỗ hẹn "cà phê" đầu tiên
         </motion.p>
       </div>
     </GalaxyBg>

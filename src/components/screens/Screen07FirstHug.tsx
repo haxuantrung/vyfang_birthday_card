@@ -85,7 +85,7 @@ export function Screen07FirstHug() {
             lineHeight: "1.4",
             textShadow: "0 0 30px rgba(246, 198, 255, 0.3)",
           }}>
-            Ấm áp và an toàn.
+            Ấm áp và Thoải mái.
           </h1>
 
           <motion.div
